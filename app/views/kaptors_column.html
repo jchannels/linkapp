@@ -1,0 +1,119 @@
+<div class="col-md-3">
+	<div ng-repeat="kaptor in kaptors" ng-controller="KaptorCtrl">
+		<div class="link-container">
+
+			<!-- EDIT LINK MODE -->
+			<div class="kaptor"  ng-show="kaptor.mode =='edit-link'">
+				<div class="header"  ng-click="collapse(kaptor)">
+					<div class="row">
+						<div class="col-md-12">
+							<span class="title"> {{kaptor.title}} </span>
+							<span class="author">{{kaptor.username}}</span>
+						</div>
+					</div>
+				</div>				
+				<div >
+					 <div class="form-group">
+						<input type="text" class="form-control"  placeholder="Link title" ng-model="newLink.title">	
+						<input type="text" class="form-control"  placeholder="Url" ng-model="newLink.url">	
+						<button class="btn btn-default" ng-click="confirmEditLink(kaptor,newLink);">Edit link</button>
+						<button class="btn btn-default" ng-click="cancelEditLink(kaptor,newLink);">Cancel</button>
+						</div>
+				</div>
+			</div>
+		
+		
+			<!-- EDIT MODE -->
+			<div class="kaptor"  ng-show="kaptor.mode =='edit'">
+				<div class="header">
+					<input type="text" class="form-control" ng-model="kaptor.title" ng-keydown="keypress($event)" placeholder="Kaptor title"/>
+				</div>
+				<div class="list-links">
+					<ul>
+						<li ng-repeat="link in kaptor.links">
+							<a href="{{link.url}}"> {{link.title}} </a> 
+							<span class="pull-right">
+								<span class="glyphicon glyphicon-pencil" ng-click="editLink(kaptor,link);"></span>
+								<span class="glyphicon glyphicon-trash" ng-click="deleteLink(kaptor,link,$index);"></span>
+							</span>
+						</li>
+					</ul>
+				</div>
+				<div class="info">
+				</div>
+			</div>
+			
+			
+			<!-- VIEW MODE-->
+			<div class="kaptor"  ng-show="kaptor.mode =='view'|| kaptor.mode =='search'">
+				<div class="header"  ng-click="collapse(kaptor)">
+					<div class="row">
+						<div class="col-md-12">
+							<span class="title"> {{kaptor.title}} </span>
+							<span class="author">{{kaptor.username}}</span>
+						</div>
+					</div>
+				</div>
+				<ul ng-show="!kaptor.collapsed">
+					<li ng-repeat="link in kaptor.links" ng-class="{'highlight': link.isNew }">
+						 <a href="{{link.url}}" target="_blank">  {{link.title}} </a> 
+					</li>
+				</ul>
+				
+				<div class="empty-kaptor" ng-show="addingLink" >
+					 <div class="form-group">
+						<input type="text" class="form-control"  placeholder="Link title" ng-model="newLink.title">	
+						<input type="text" class="form-control"  placeholder="Url" ng-model="newLink.url">	
+						<button class="btn btn-default" ng-click="addLink(kaptor);">Add link</button>
+						<button class="btn btn-default" ng-click="cancelNewLink();">Cancel</button>
+						</div>
+						
+				</div>
+				
+			</div>
+
+		</div>
+	
+		<div class="kaptor-footer">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="pull-right" ng-show="kaptor.mode =='edit'">						
+						<div class="button-kaptor button-kaptor-add" ng-click="confirmEdition(kaptor)">
+							<span class="glyphicon glyphicon-ok" ></span>
+						</div>	
+						<div class="button-kaptor button-kaptor-delete" ng-click="cancelEdition(kaptor)">
+							<span class="glyphicon glyphicon-remove" ></span>
+						</div>
+					</div>
+			
+					<div class="pull-right" ng-show="kaptor.mode =='search'">
+						<div class="button-kaptor button-kaptor-delete" ng-click="subscribe(kaptor)">
+							<span class="glyphicon glyphicon-heart" ></span>
+						</div>	
+					</div>
+				
+					<div class="pull-right"  ng-show="kaptor.mode =='view'">
+						<div class="button-kaptor button-kaptor-add" ng-click="addNewEmptyLink(kaptor)" ng-show="isOwner(kaptor)">
+							<span class="glyphicon"  ng-class="{'glyphicon-minus': addingLink, 'glyphicon-plus': !addingLink }" ></span>
+						</div>
+						
+						<div class="button-kaptor button-kaptor-edit" ng-click="editKaptor(kaptor)"  ng-show="isOwner(kaptor)">
+							<span class="glyphicon glyphicon-edit button-kaptor"></span>
+						</div>
+						
+						<div class="button-kaptor button-kaptor-delete" ng-click="deleteKaptor(kaptor);" ng-show="isOwner(kaptor)">
+							<span  class="glyphicon glyphicon glyphicon-trash button-kaptor" aria-hidden="true"></span>
+						</div>
+						
+						<div class="button-kaptor button-kaptor-open-all" ng-click="refresh(kaptor);" ng-show="!isOwner(kaptor)">
+							<span  class="glyphicon glyphicon-refresh button-kaptor" aria-hidden="true"></span>
+						</div>
+						<div class="button-kaptor button-kaptor-delete" ng-click="unsubscribe(kaptor);" ng-show="!isOwner(kaptor)">
+							<span  class="glyphicon glyphicon-remove button-kaptor" aria-hidden="true"></span>
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+</div>

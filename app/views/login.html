@@ -1,0 +1,53 @@
+<div class="row" style="padding-top:15px;">
+		<div class=" col-md-12">
+			<div class="logo">		
+			<a href="index.html">	<img src="images/logo.png" width="200px" /></a>
+			</div>
+		</div>
+		</div>
+
+<div class="row">
+<div class=" col-md-offset-4 col-md-4" >
+<div class="link-container">
+				<div class="kaptor" >
+					<div class="header">
+						<div class="row">
+							<div class="col-md-12">
+								<span class="title"> Login  </span>
+								<span class="author">Linkaptor team</span>
+							</div>
+						</div>
+					</div>
+					<div style="padding:15px;">
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input type="text" class="form-control" id="username" placeholder="Username" ng-model="loginData.username">
+					  </div>
+			  
+					  <div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" placeholder="password" ng-keydown="keypress($event)" ng-model="loginData.password">
+					  </div>
+					  
+					</div>
+				</div>
+			</div>
+			<div class="kaptor-footer">
+			<div class="row">
+						<div class="col-md-12">
+							<div class="pull-right">
+															
+								<div class="button-kaptor button-kaptor-add" ng-click="gogo()">
+									<span  class="glyphicon glyphicon glyphicon-ok " aria-hidden="true"></span>
+								</div>
+								<div class="button-kaptor button-kaptor-delete" ng-click="cancelLogin()">
+										<span  class="glyphicon glyphicon-remove " aria-hidden="true"></span>
+								</div>								
+							</div>
+						</div>
+						
+			</div>		
+
+		</div>
+	</div>		
+</div>

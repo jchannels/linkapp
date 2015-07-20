@@ -1,0 +1,59 @@
+<nav class="navbar navbar-default" style="margin: 5px 0 5px 0;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	
+	 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	
+      <a class="navbar-brand" href="#">
+        <img src="images/logo.png" width="100px" />
+      </a>
+	  <p class="navbar-text" style="margin-left:0px;">by {{username}}</p>
+    </div>
+
+	<button type="submit" class="btn btn-default navbar-btn pull-right" style="margin-left:5px;" ng-click="logout();">Logout</button>
+	<button type="submit" class="btn btn-default navbar-btn pull-right" ng-click="addNewKaptor();">New kaptor</button>
+	
+	<form class="navbar-form navbar-left" role="search" >
+	  <div class="form-group">
+		<input type="text" class="form-control"  ng-model="searchWord">
+	  </div>
+	  <button type="submit" class="btn btn-default" ng-click="search()">Search</button>
+	</form>
+  </div>
+</nav>
+
+<div class="row">
+	<div class="col-md-12">
+		<span class="actions">		
+			<span class="" ng-click="collapseDown();">
+				<span class="glyphicon glyphicon-collapse-down" style="vertical-align:middle"></span>
+			</span>
+			<span class="" ng-click="collapseUp();">
+				<span class="glyphicon glyphicon-collapse-up" style="vertical-align:middle"></span>
+			</span>
+		</span>
+		<span ng-click="cancelSearch()" class="glyphicon glyphicon-remove pull-right actions"  style="vertical-align:middle" ng-show="searching"></span>
+	</div>
+</div>
+
+<div class="row" ng-show="searching">
+	<div class="col-md-12">
+		<span >		
+			<h3>Resultados de busqueda: {{searchWord}}</h3>
+		</span>
+	</div>
+</div>
+
+
+<div class="row">
+	<div kaptors-column kaptors="kaptors[0]" on-delete-kaptor="startup()"></div>
+	<div kaptors-column kaptors="kaptors[1]" on-delete-kaptor="startup()"></div>
+	<div kaptors-column kaptors="kaptors[2]" on-delete-kaptor="startup()"></div>
+	<div kaptors-column kaptors="kaptors[3]" on-delete-kaptor="startup()"></div>
+</div>
+
