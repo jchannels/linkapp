@@ -8,7 +8,7 @@
  * Controller of the linkApp
  */
 angular.module('linkApp')
-  .controller('AccountCtrl', [ '$scope','$http','$location','$localStorage', function($scope,$http,$location,$localStorage){
+  .controller('AccountCtrl', [ '$scope','$http','$location','$localStorage','ENV', function($scope,$http,$location,$localStorage,ENV){
 
 	$scope.newUser = {'username':'', 'email':'', 'password':'', 'repassword':''};
 	$scope.message = '';
@@ -22,7 +22,7 @@ angular.module('linkApp')
 			return;
 		}
 	
-		$http.post("http://localhost/linkaptor/api/index.php/users/", $scope.newUser)
+		$http.post(ENV.apiEndpoint + "/index.php/users/", $scope.newUser)
 			.success(function(res) {
 				
 				if(res.isValid == "true"){

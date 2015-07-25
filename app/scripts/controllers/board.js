@@ -8,17 +8,25 @@
  * Controller of the linkApp
  */
 angular.module('linkApp')
-  .controller('BoardCtrl',  [ '$scope','$interval','$http','$rootScope','$location','$localStorage', function($scope,$interval,$http, $rootScope,$location,$localStorage){
-
+  .controller('BoardCtrl',['$scope','$rootScope','$location','$localStorage','kaptorService',
+              function($scope,$rootScope,$location,$localStorage, kaptorService){
+      
 	$scope.addNewKaptor = function() {
 	
 		$scope.newKaptor = {"title":"", "isNew":"true", "links":[] };
-		$http.post('http://localhost/linkaptor/api/index.php/users/'+$localStorage.username+'/kaptors',$scope.newKaptor )
-			.success(function(response) {
-				var k = response;
-				k.mode = 'edit';
-				$scope.arrengeKaptor(k);
-			});
+        
+        kaptorService.addNewKaptor($scope.username,$scope.newKaptor)
+                .then(function(res) {
+                    $scope.initData();
+            
+                    angular.forEach(kaptorService.kaptors, function(k) {
+                        $scope.arrengeKaptor(k);
+                    }); 
+                 },
+                function(data) {
+                    console.log('failed.')
+        });
+	
 	};
 
 	$scope.initData = function() {
@@ -33,16 +41,21 @@ angular.module('linkApp')
 	};
 
 	$scope.startup = function() {
-			$scope.username = $localStorage.username;
-			$http.get("http://localhost/linkaptor/api/index.php/users/"+$localStorage.username+"/kaptors")
-				.success(function(response) {
-					$scope.initData();
-					
-					angular.forEach(response.kaptors, function(k) {
-						k.mode = 'view';
-						$scope.arrengeKaptor(k);
-					});
-				});
+        $scope.username = $localStorage.username;
+
+         kaptorService.getUserKaptor($scope.username)
+            .then(function(kaptorsData) {
+
+                $scope.initData();
+
+                angular.forEach(kaptorService.kaptors, function(k) {
+                    k.mode = 'view';
+                    $scope.arrengeKaptor(k);
+                }); 
+            },
+            function(data) {
+                console.log('kaptors retrieval failed.')
+            });
 	};
 
 	$scope.collapseUp = function(){
@@ -60,25 +73,47 @@ angular.module('linkApp')
 	};
 	
 	$scope.searchWord = '';
-	$scope.search =function(){
+	
+    $scope.search =function(){
 		$scope.searching = true;
-		$http.get("http://localhost/linkaptor/api/index.php/kaptors?search=" + $scope.searchWord)
-			.success(function(res) {
-				$scope.initData();
-					angular.forEach(res.kaptors, function(k) {
-						k.mode = 'search';
-						k.collapsed = true;
-						$scope.arrengeKaptor(k);
-					});
-			});
+        kaptorService.searchResult = [];
+        
+        kaptorService.searchKaptors($scope.searchWord)
+            .then(function(kaptorsData) {
+
+                $scope.initData();
+                angular.forEach(kaptorService.searchResult, function(k) {
+                        k.mode = 'search';
+                        k.collapsed = true;
+                        $scope.arrengeKaptor(k);
+                    });
+            },
+            function(data) {
+                console.log('kaptors retrieval failed.')
+            });
+        
 	};
 	
 	$scope.cancelSearch=function(){
-		$scope.startup();	
+        
+         $scope.initData();
+		
+         angular.forEach(kaptorService.kaptors, function(k) {
+            $scope.arrengeKaptor(k);
+        });
+
 		$scope.searchWord = '';		
 		$scope.searching = false;
 	};
 	
+    $scope.orderKaptorList = function(){
+    
+        $scope.initData();
+        angular.forEach(kaptorService.kaptors, function(k) {
+                $scope.arrengeKaptor(k);
+            });
+    }            
+                  
 	$scope.arrengeKaptor = function(kaptor){
 	
 		if($scope.nextColumn ===4) {
@@ -88,5 +123,7 @@ angular.module('linkApp')
 		$scope.nextColumn++;
 	};
 	
+                  
+    // Inicial control
 	$scope.startup();
 }]);

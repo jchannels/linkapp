@@ -10,7 +10,7 @@
  */
 angular
   .module('linkApp', [
-    'ngRoute','ngStorage'
+    'ngRoute','ngStorage','config'
   ])
   .config(function ($routeProvider) {
     $routeProvider

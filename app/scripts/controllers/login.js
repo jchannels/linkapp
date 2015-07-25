@@ -8,7 +8,7 @@
  * Controller of the linkApp
  */
 angular.module('linkApp')
-   .controller('LoginCtrl',  [ '$scope','$http','$location','$localStorage', function($scope,$http,$location,$localStorage){
+   .controller('LoginCtrl',  [ '$scope','$http','$location','$localStorage','ENV', function($scope,$http,$location,$localStorage, ENV){
 
 	$scope.loginData = {'username':'', 'password':''};
 	$scope.mensaje = '';
@@ -21,7 +21,7 @@ angular.module('linkApp')
 		
 	$scope.gogo = function(){
 	
-		$http.post("http://localhost/linkaptor/api/index.php/authentication/", $scope.loginData).
+		$http.post( ENV.apiEndpoint + "/index.php/authentication/", $scope.loginData).
 			success(function(res) {
 				if(res.authentification === "true"){
 				

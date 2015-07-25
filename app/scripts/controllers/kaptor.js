@@ -8,7 +8,7 @@
  * Controller of the linkApp
  */
 angular.module('linkApp')
-  .controller('KaptorCtrl',  [ '$scope','$http','$localStorage', function($scope,$http,$localStorage){
+  .controller('KaptorCtrl', ['$scope','$http','$localStorage','kaptorService', function($scope,$http,$localStorage,kaptorService){
 
 	$scope.collapsed = false;
 	
@@ -52,15 +52,18 @@ angular.module('linkApp')
 	$scope.deleteKaptor = function(kaptor) {
 		if(!confirm("Do you want to delete the kaptor?"))
 			return;
-	
-		$http.delete("http://localhost/linkaptor/api/index.php/kaptors/" + kaptor.id)
-			.success(function(){
-				$scope.onDeleteKaptor();
-			});
+
+         kaptorService.deleteKaptor(kaptor)
+            .then(function(res) {
+                    $scope.onDeleteKaptor();
+                },
+                function(data) {
+                    console.log('Error.')
+                });
 	};
 	
-	
 	$scope.addingLink = false;
+      
 	$scope.newLink = {'url':'','title':''};
 	
 	$scope.addLink = function(kaptor) {
@@ -123,27 +126,31 @@ angular.module('linkApp')
 		kaptor.mode = 'edit';	
 	};	
 		
-
 	$scope.cancelNewLink = function() {
 		$scope.addingLink = false;	
 		$scope.newLink = {};
 	};	
 
 	$scope.subscribe = function(kaptor){
-		var subscription ={'username':$localStorage.username, 'kaptorId': kaptor.id};
-		
-		$http.post('http://localhost/linkaptor/api/index.php/users/'+$localStorage.username+'/subscriptions',subscription)
-				.success(function(response) {
-					kaptor.title = kaptor.title + ' Added';
-				});
+        
+        kaptorService.subscribeKaptor($localStorage.username,kaptor)
+            .then(function(res) {
+                    //$scope.onDeleteKaptor();
+                },
+                function(data) {
+                    console.log('Error.')
+                });
 	}	
 	
 	$scope.unsubscribe = function(kaptor){
 		
-		$http.delete('http://localhost/linkaptor/api/index.php/subscriptions/' + kaptor.subscription_id)
-				.success(function(response) {
-					$scope.onDeleteKaptor();
-				});
+		kaptorService.unsubscribeKaptor(kaptor)
+            .then(function(res) {
+                    $scope.onDeleteKaptor();
+                },
+                function(data) {
+                    console.log('Error.')
+                });
 	}	
 	
 	$scope.isOwner = function(kaptor){
