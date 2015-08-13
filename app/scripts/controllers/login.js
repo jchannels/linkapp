@@ -8,7 +8,7 @@
  * Controller of the linkApp
  */
 angular.module('linkApp')
-   .controller('LoginCtrl',  [ '$scope','$http','$location','$localStorage','ENV', function($scope,$http,$location,$localStorage, ENV){
+   .controller('LoginCtrl',  [ '$scope','$http','$location','$localStorage','ENV','jwtHelper', function($scope,$http,$location,$localStorage, ENV,jwtHelper){
 
 	$scope.loginData = {'username':'', 'password':''};
 	$scope.mensaje = '';
@@ -24,7 +24,8 @@ angular.module('linkApp')
 		$http.post( ENV.apiEndpoint + "/index.php/authentication/", $scope.loginData).
 			success(function(res) {
 				if(res.authentification === "true"){
-				
+                                            
+				    $localStorage.token = res.token;
 					$localStorage.username = $scope.loginData.username;
 					$location.path("/board");
 				}

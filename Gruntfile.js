@@ -421,7 +421,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            apiEndpoint: 'http://localhost/linkapi/'
+            apiEndpoint: 'http://localhost/linkapi'
           }
         }
       },

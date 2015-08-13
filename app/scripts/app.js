@@ -9,20 +9,11 @@
  * Main module of the application.
  */
 angular
-  .module('linkApp', [
-    'ngRoute','ngStorage','config'
-  ])
+  .module('linkApp', ['ngRoute','ngStorage','config','angular-jwt'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
       })
       .when('/board', {
         templateUrl: 'views/board.html',
@@ -45,12 +36,23 @@ angular
   });
 
 
-angular.module('linkApp').config(function ($httpProvider) {   
+angular.module('linkApp').config( function ($httpProvider,jwtInterceptorProvider) {   
         $httpProvider.defaults.useXDomain = true;
      
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
         $httpProvider.defaults.headers.common["Accept"] = "application/json";
         $httpProvider.defaults.headers.common["Content-Type"] = "application/json";
+    
+        jwtInterceptorProvider.tokenGetter = [function() {
+        
+        return localStorage.getItem('ngStorage-token');
+      }];
 
+      $httpProvider.interceptors.push('jwtInterceptor');
+    
     });
+
+
+
+
 

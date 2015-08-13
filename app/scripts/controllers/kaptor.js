@@ -72,7 +72,7 @@ angular.module('linkApp')
 		if(typeof link.url === "undefined")
 			link.url= '';
 		
-		$http.post("http://localhost/linkaptor/api/index.php/kaptors/" + kaptor.id + "/links", link)
+		$http.post("http://localhost/linkapi/index.php/kaptors/" + kaptor.id + "/links", link)
 			.success(function(response) {
 				kaptor.links.push(response);
 			});
@@ -94,7 +94,7 @@ angular.module('linkApp')
 		if(!confirm("Do you want to delete the link " ))
 			return;
 		
-		$http.delete("http://localhost/linkaptor/api/index.php/links/" + link.id )
+		$http.delete("http://localhost/linkapi/index.php/links/" + link.id )
 		.success(function(response) {
 			kaptor.links.splice(index,1);
 		});
@@ -118,7 +118,7 @@ angular.module('linkApp')
 
 	$scope.confirmEditLink= function(kaptor,link) {
 		
-		$http.put("http://localhost/linkaptor/api/index.php/links/" + link.id, link)
+		$http.put("http://localhost/linkapi/index.php/links/" + link.id, link)
 		.success(function(response) {
 		
 		});
@@ -158,7 +158,7 @@ angular.module('linkApp')
 	}
 	
 	$scope.refresh = function(kaptor){
-		$http.get("http://localhost/linkaptor/api/index.php/kaptors/" + kaptor.id)
+		$http.get("http://localhost/linkapi/index.php/kaptors/" + kaptor.id)
 			.success(function(res) {
 				$scope.lookForChange(kaptor.links,res.links);
 				kaptor.links = res.links;

@@ -24,7 +24,7 @@ angular.module('linkApp').service('kaptorService', function albumService($http, 
     function getUserKaptor(username) {
         var def = $q.defer();
 
-        $http.get("http://localhost/linkaptor/api/index.php/users/"+username+"/kaptors")
+        $http.get(ENV.apiEndpoint + "/index.php/users/"+username+"/kaptors")
             .success(function(data) {
                 service.kaptors = data.kaptors;
                 def.resolve(data);

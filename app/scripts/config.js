@@ -2,6 +2,6 @@
 
  angular.module('config', [])
 
-.constant('ENV', {name:'development',apiEndpoint:'http://localhost/linkapi/'})
+.constant('ENV', {name:'development',apiEndpoint:'http://localhost/linkapi'})
 
 ;

@@ -8,10 +8,6 @@
  * Controller of the linkApp
  */
 angular.module('linkApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+  .controller('MainCtrl',['$scope',  function($scope){
+      
+}]);
