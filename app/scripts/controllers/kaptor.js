@@ -46,7 +46,7 @@ angular.module('linkApp')
 	
 	$scope.confirmEdition =function(kaptor){
 		kaptor.mode = 'view';
-		$http.put('http://localhost/linkaptor/api/index.php/kaptors/' + kaptor.id,kaptor);
+		$http.put('http://api.linkaptor.com/index.php/kaptors/' + kaptor.id,kaptor);
 	}
 	
 	$scope.deleteKaptor = function(kaptor) {
@@ -72,11 +72,14 @@ angular.module('linkApp')
 		if(typeof link.url === "undefined")
 			link.url= '';
 		
-		$http.post("http://localhost/linkapi/index.php/kaptors/" + kaptor.id + "/links", link)
-			.success(function(response) {
-				kaptor.links.push(response);
-			});
-		
+         kaptorService.addLink(kaptor,link)
+            .then(function(res) {
+                   
+                },
+                function(data) {
+                    console.log('Error.')
+                });
+        
 		$scope.newLink = {"title":'', "url":''};
 	};
 	
@@ -93,11 +96,15 @@ angular.module('linkApp')
 		
 		if(!confirm("Do you want to delete the link " ))
 			return;
-		
-		$http.delete("http://localhost/linkapi/index.php/links/" + link.id )
-		.success(function(response) {
-			kaptor.links.splice(index,1);
-		});
+        
+          kaptorService.deleteLink(kaptor,link)
+            .then(function(res) {
+                   
+                },
+                function(data) {
+                    console.log('Error.')
+                });
+        
 		kaptor.mode = 'edit';	
 	};	
 	
@@ -118,7 +125,7 @@ angular.module('linkApp')
 
 	$scope.confirmEditLink= function(kaptor,link) {
 		
-		$http.put("http://localhost/linkapi/index.php/links/" + link.id, link)
+		$http.put("http://api.linkaptor.com/index.php/links/" + link.id, link)
 		.success(function(response) {
 		
 		});
@@ -158,7 +165,7 @@ angular.module('linkApp')
 	}
 	
 	$scope.refresh = function(kaptor){
-		$http.get("http://localhost/linkapi/index.php/kaptors/" + kaptor.id)
+		$http.get("http://api.linkaptor.com/index.php/kaptors/" + kaptor.id)
 			.success(function(res) {
 				$scope.lookForChange(kaptor.links,res.links);
 				kaptor.links = res.links;

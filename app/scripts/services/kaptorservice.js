@@ -7,7 +7,7 @@
  * # kaptorService
  * Service in the linkApp.
  */
-angular.module('linkApp').service('kaptorService', function albumService($http, $q,ENV) {
+angular.module('linkApp').service('kaptorService', function ($http, $q,ENV) {
         
     var service = {
         kaptors : [],
@@ -17,7 +17,9 @@ angular.module('linkApp').service('kaptorService', function albumService($http, 
         searchKaptors:searchKaptors,
         deleteKaptor:deleteKaptor,
         subscribeKaptor:subscribeKaptor,
-        unsubscribeKaptor:unsubscribeKaptor
+        unsubscribeKaptor:unsubscribeKaptor,
+        addLink:addLink,
+        deleteLink:deleteLink
     };
     return service;
 
@@ -104,6 +106,30 @@ angular.module('linkApp').service('kaptorService', function albumService($http, 
                     var index =  service.kaptors.indexOf(kaptor);
                     service.kaptors.splice(index, 1);    
 					def.resolve(data);
+				});
+
+        return def.promise;
+    }
+    
+     function addLink(kaptor, link) {
+
+        var def = $q.defer();
+		$http.post(ENV.apiEndpoint + '/index.php/kaptors/' + kaptor.id + '/links', link)
+				.success(function(data) {
+                   kaptor.links.push(data);
+				});
+
+        return def.promise;
+    }
+    
+    function deleteLink(kaptor, link) {
+
+        var def = $q.defer();
+        
+		$http.delete(ENV.apiEndpoint + '/index.php/links/' + link.id )
+				.success(function(data) {
+                    var index =  kaptor.links.indexOf(link);
+                     kaptor.links.splice(index, 1);     
 				});
 
         return def.promise;
