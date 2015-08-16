@@ -46,7 +46,14 @@ angular.module('linkApp')
 	
 	$scope.confirmEdition =function(kaptor){
 		kaptor.mode = 'view';
-		$http.put('http://api.linkaptor.com/index.php/kaptors/' + kaptor.id,kaptor);
+        
+        kaptorService.editKaptor(kaptor)
+            .then(function(res) {
+                    
+                },
+                function(data) {
+                    console.log('Error.')
+                });
 	}
 	
 	$scope.deleteKaptor = function(kaptor) {
@@ -125,10 +132,14 @@ angular.module('linkApp')
 
 	$scope.confirmEditLink= function(kaptor,link) {
 		
-		$http.put("http://api.linkaptor.com/index.php/links/" + link.id, link)
-		.success(function(response) {
-		
-		});
+		  kaptorService.editLink(link)
+            .then(function(res) {
+                   
+                },
+                function(data) {
+                    console.log('Error.')
+                });
+        
 		$scope.newLink = {};
 		kaptor.mode = 'edit';	
 	};	

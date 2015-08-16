@@ -14,12 +14,14 @@ angular.module('linkApp').service('kaptorService', function ($http, $q,ENV) {
         searchResult: [],
         getUserKaptor: getUserKaptor,
         addNewKaptor : addNewKaptor,
+        editKaptor:editKaptor,
         searchKaptors:searchKaptors,
         deleteKaptor:deleteKaptor,
         subscribeKaptor:subscribeKaptor,
         unsubscribeKaptor:unsubscribeKaptor,
         addLink:addLink,
-        deleteLink:deleteLink
+        deleteLink:deleteLink,
+        editLink:editLink
     };
     return service;
 
@@ -49,6 +51,21 @@ angular.module('linkApp').service('kaptorService', function ($http, $q,ENV) {
             })
             .error(function() {
                 def.reject("Failed to get kaptors");
+            });
+
+        return def.promise;
+    }
+    
+    function editKaptor(kaptor) {
+        
+        var def = $q.defer();
+
+        $http.put(ENV.apiEndpoint + '/index.php/kaptors/' + kaptor.id,kaptor)
+            .success(function(data) {
+
+            })
+            .error(function() {
+                def.reject("Failed");
             });
 
         return def.promise;
@@ -111,7 +128,7 @@ angular.module('linkApp').service('kaptorService', function ($http, $q,ENV) {
         return def.promise;
     }
     
-     function addLink(kaptor, link) {
+    function addLink(kaptor, link) {
 
         var def = $q.defer();
 		$http.post(ENV.apiEndpoint + '/index.php/kaptors/' + kaptor.id + '/links', link)
@@ -122,6 +139,17 @@ angular.module('linkApp').service('kaptorService', function ($http, $q,ENV) {
         return def.promise;
     }
     
+    function editLink(link) {
+
+        var def = $q.defer();
+			$http.put(ENV.apiEndpoint + '/index.php/links/' + link.id, link)
+				.success(function(data) {
+                  
+				});
+
+        return def.promise;
+    }  
+
     function deleteLink(kaptor, link) {
 
         var def = $q.defer();
